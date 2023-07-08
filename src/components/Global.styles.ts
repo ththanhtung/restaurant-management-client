@@ -13,6 +13,11 @@ const GlobalStyles = createGlobalStyle`
         font-family: 'Source Code Pro', monospace;
     }
 
+    body{
+        width: 100%;
+        /* border: 5px solid blue; */
+    }
+
 `;
 
 export {
