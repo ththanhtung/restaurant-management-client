@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
 import { Wrapper, Container, StyledForm } from './styles';
 import { InputField, Button } from '../../components';
+import authApi from '../../../../api/authApi';
+import { AxiosError } from 'axios';
 
 interface FormProps {
   username: string;
   password: string;
+  email: string;
+  phone: number;
+  address: string;
 }
 
 const Signup: React.FC = () => {
   const [values, setValues] = useState<FormProps>({
     username: '',
     password: '',
+    email: '',
+    phone: 0,
+    address: '',
   });
 
   const inputs = [
@@ -54,9 +62,11 @@ const Signup: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const data = new FormData(form);
-    console.log(Object.fromEntries(data.entries()));
+
+    authApi
+      .signup(values)
+      .then((resp) => console.log(resp.data))
+      .catch((error: AxiosError) => console.log('fail to create new user', error.response?.data));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +74,8 @@ const Signup: React.FC = () => {
   };
 
   console.log(values);
+  console.log("env: ",process.env);
+  
 
   return (
     <Wrapper>
@@ -80,7 +92,7 @@ const Signup: React.FC = () => {
               />
             ))}
           </div>
-          <Button label='sign up'/>
+          <Button label="sign up" />
         </StyledForm>
       </Container>
     </Wrapper>

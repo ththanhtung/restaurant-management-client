@@ -4,6 +4,8 @@ const StyledInputField = styled.div`
     width: calc(100%/2 - 20px);
     margin: 1em 0;
     span {
+        font-weight: 600;
+        letter-spacing: 1px;
         display: block;
         text-transform: capitalize;
         margin-bottom: .3em;
