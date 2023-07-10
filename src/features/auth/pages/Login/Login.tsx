@@ -15,10 +15,10 @@ const Login:React.FC = () => {
 
   const inputs = [
     {
-      name: 'username',
-      type: 'text',
-      placeholer: 'enter username',
-      label: 'username',
+      name: 'email',
+      type: 'email',
+      placeholer: 'enter email',
+      label: 'email',
     },
     {
       name: 'password',
