@@ -74,7 +74,7 @@ const Signup: React.FC = () => {
   };
 
   console.log(values);
-  console.log("env: ",process.env);
+  // console.log("env: ",process.env);
   
 
   return (
@@ -88,6 +88,7 @@ const Signup: React.FC = () => {
                 key={index}
                 {...input}
                 value={values?.[input.name as keyof FormProps]}
+                width="calc(100%/2 - 20px)"
                 onChange={handleChange}
               />
             ))}

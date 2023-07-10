@@ -7,6 +7,7 @@ interface Props {
   placeholer?: string;
   name: string;
   value: string | number;
+  width: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -16,10 +17,11 @@ const InputField: React.FC<Props> = ({
   placeholer,
   name,
   value,
+  width,
   onChange,
 }) => {
   return (
-    <StyledInputField>
+    <StyledInputField width={width}>
       <span>{label}</span>
       <input
         type={type}
