@@ -1,4 +1,4 @@
-import { axiosClient } from "./axiosClient"
+import {axiosClient, axiosPrivate } from "./axiosClient"
 import { ICredential, IUser } from './interfaces';
 
 class AuthAPI {
@@ -9,7 +9,7 @@ class AuthAPI {
 
   login = (credentialData: ICredential) =>{
     const url = '/auth/login'
-    return axiosClient.post(url, credentialData)
+    return axiosClient.post(url, credentialData);
   }
 }
 

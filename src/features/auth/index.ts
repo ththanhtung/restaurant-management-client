@@ -1,2 +1,2 @@
 export * from './pages'
-export * from './RequireAuth'
+export * from '../../components/RequireAuth'

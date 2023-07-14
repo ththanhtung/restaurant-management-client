@@ -1,5 +1,5 @@
-import axios from "axios";
-import queryString from "query-string";
+import axios from 'axios';
+import queryString from 'query-string';
 
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_BASE_URL as string,
@@ -9,19 +9,29 @@ const axiosClient = axios.create({
   paramsSerializer: (params) => queryString.stringify(params),
 });
 
-axiosClient.interceptors.request.use((config)=>{
-    return config
-})
+axiosClient.interceptors.request.use((config) => {
+  return config;
+});
 
-axiosClient.interceptors.response.use((response)=>{
-    if (response && response.data){
-        return response
+axiosClient.interceptors.response.use(
+  (response) => {
+    if (response && response.data) {
+      return response;
     }
-    return response
-}, (err)=>{
-    throw err
-})
+    return response;
+  },
+  (err) => {
+    throw err;
+  }
+);
 
-export {
-    axiosClient
-}
+const axiosPrivate = axios.create({
+  baseURL: import.meta.env.VITE_REACT_APP_BASE_URL as string,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+  paramsSerializer: (params) => queryString.stringify(params),
+});
+
+export { axiosClient, axiosPrivate };

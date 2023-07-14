@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import { GlobalStyles, Layout, Public, Header } from './components';
-import { Login, RequireAuth, Signup} from './features/auth';
+import { GlobalStyles, Layout, Public, Header, RequireAuth } from './components';
+import { Login, Signup} from './features/auth';
 
 function App() {
   return (
@@ -10,11 +10,15 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Layout />}>
-          <Route index element={<Public />}></Route>
+          <Route index element={<Public />}/>
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
         </Route>
-        <Route element={<RequireAuth />}></Route>
+
+        {/* Protected Routes */}
+        <Route element={<RequireAuth />}>
+          <Route path='/protected' element={<h1>protected route</h1>}/>
+        </Route>
       </Routes>
     </>
   );

@@ -1,17 +1,42 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Container, StyledForm, Wrapper } from './styles';
 import { Button, InputField } from '../../components';
-
+import authApi from '../../../../api/authApi';
+import { AxiosError } from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { setCredential } from '../../authSlice';
+import { useDispatch } from 'react-redux';
 interface FormProps {
   username: string;
   password: string;
 }
 
-const Login:React.FC = () => {
-    const [values, setValues] = useState<FormProps>({
+interface LocationProps {
+  state: {
+    from: Location;
+  };
+}
+
+interface UserResp {
+  metadata: {
+    userId: string;
+    email: string;
+  };
+  token: string;
+}
+
+const Login: React.FC = () => {
+  const [values, setValues] = useState<FormProps>({
     username: '',
-    password: ''
+    password: '',
   });
+  const location = useLocation() as unknown as LocationProps;
+
+  const from = location.state?.from?.pathname || '/';
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const inputs = [
     {
@@ -25,11 +50,30 @@ const Login:React.FC = () => {
       type: 'password',
       placeholer: 'enter password',
       label: 'password',
-    }
+    },
   ];
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const resp = await authApi.login(values);
+
+      const data = resp.data as UserResp;
+      console.log(data.metadata);
+
+      dispatch(
+        setCredential({
+          user: data.metadata,
+          token: data.token,
+        })
+      );
+
+      navigate(from, { replace: true });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,31 +82,28 @@ const Login:React.FC = () => {
 
   console.log(values);
   // console.log("env: ",process.env);
-  
 
   return (
     <Wrapper>
       <Container>
         <h3 className="title">Login</h3>
-        <StyledForm action="#" onSubmit={handleSubmit}>
+        <StyledForm action="#" onSubmit={handleSubmit as never}>
           <div className="user-detail">
             {inputs.map((input, index) => (
               <InputField
                 key={index}
                 {...input}
                 value={values?.[input.name as keyof FormProps]}
-                width='100%'
+                width="100%"
                 onChange={handleChange}
               />
             ))}
           </div>
-          <Button label="Login"/>
+          <Button label="Login" />
         </StyledForm>
       </Container>
     </Wrapper>
   );
-}
+};
 
-export {
-  Login
-}
+export { Login };

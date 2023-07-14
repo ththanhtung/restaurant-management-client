@@ -60,13 +60,19 @@ const Signup: React.FC = () => {
     },
   ];
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    authApi
-      .signup(values)
-      .then((resp) => console.log(resp.data))
-      .catch((error: AxiosError) => console.log('fail to create new user', error.response?.data));
+    // authApi
+    // .signup(values)
+    // .then((resp) => console.log(resp.data))
+    // .catch((error: AxiosError) => {console.log('fail to create new user', error.response?.data)});
+    try {
+      await authApi.signup(values);
+    } catch (error) {
+      if (error instanceof AxiosError){
+        console.log('fail to create new user', error.response?.data);
+      }
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,13 +81,12 @@ const Signup: React.FC = () => {
 
   console.log(values);
   // console.log("env: ",process.env);
-  
 
   return (
     <Wrapper>
       <Container>
         <h3 className="title">Sign up</h3>
-        <StyledForm action="#" onSubmit={handleSubmit}>
+        <StyledForm action="#" onSubmit={handleSubmit as never}>
           <div className="user-detail">
             {inputs.map((input, index) => (
               <InputField
